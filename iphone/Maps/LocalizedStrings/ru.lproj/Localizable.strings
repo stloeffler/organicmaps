@@ -2695,7 +2695,7 @@
 
 "type.power" = "Энергетика";
 
-"type.power.generator" = "Генератор энергии";
+"type.power.generator" = "Генератор";
 
 "type.power.line" = "Линия электропередач";
 
@@ -3129,7 +3129,7 @@
 
 "type.waterway.canal.tunnel" = "Канал";
 
-"type.waterway.dam" = "Плотина";
+"type.waterway.dam" = "Дамба";
 
 "type.waterway.ditch" = "Канава";
 

@@ -2731,11 +2731,11 @@
 
 "type.railway.abandoned.bridge" = "Abandoned railway";
 
-"type.railway.abandoned.tunnel" = "Abandoned railway";
+"type.railway.abandoned.tunnel" = "Abandoned Railway";
 
-"type.railway.construction" = "Railway's construction";
+"type.railway.construction" = "Railway's Construction";
 
-"type.railway.crossing" = "Railway crossing";
+"type.railway.crossing" = "Railway Crossing";
 
 "type.railway.disused" = "Disused railway";
 

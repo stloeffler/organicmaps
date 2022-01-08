@@ -1493,9 +1493,9 @@
 	<string name="type.railway">Railway</string>
 	<string name="type.railway.abandoned">Abandoned railway</string>
 	<string name="type.railway.abandoned.bridge">Abandoned railway</string>
-	<string name="type.railway.abandoned.tunnel">Abandoned railway</string>
-	<string name="type.railway.construction">Railway\'s construction</string>
-	<string name="type.railway.crossing">Railway crossing</string>
+	<string name="type.railway.abandoned.tunnel">Abandoned Railway</string>
+	<string name="type.railway.construction">Railway\'s Construction</string>
+	<string name="type.railway.crossing">Railway Crossing</string>
 	<string name="type.railway.disused">Disused railway</string>
 	<string name="type.railway.funicular">Funicular</string>
 	<string name="type.railway.funicular.bridge">Funicular</string>
