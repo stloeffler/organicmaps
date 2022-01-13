@@ -144,8 +144,8 @@
 	<string name="downloading_is_active">Harta este în curs de descărcare.</string>
 	<!-- Subject for emailed map point / poi / bookmark coordinates -->
 	<string name="share_coords_subject_default">Poți vedea locul meu preferat pe harta Organic Maps!</string>
-	<!-- Text preceding shared "my position" coordinates -->
-	<string name="share_my_position">Poți vedea poziția mea pe harta Organic Maps</string>
+	<!-- A very short title for email and shared "my position" coordinate: https://omaps.app/XXXYYY/I_am_here -->
+	<string name="share_my_position">Sunt aici</string>
 	<!-- Location share button text and a title for the respective pop up menu with share options like Message, EMail, Facebook etc. -->
 	<string name="share">Trimite</string>
 	<!-- Share by email button text, also used in editor. -->

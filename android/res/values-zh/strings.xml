@@ -143,8 +143,8 @@
 	<string name="downloading_is_active">地图下载进行中。</string>
 	<!-- Subject for emailed map point / poi / bookmark coordinates -->
 	<string name="share_coords_subject_default">嘿，在 Organic Maps 上查看我标注的图钉吧！</string>
-	<!-- Text preceding shared "my position" coordinates -->
-	<string name="share_my_position">嗨，到 Organic Maps 查看我的当前位置</string>
+	<!-- A very short title for email and shared "my position" coordinate: https://omaps.app/XXXYYY/I_am_here -->
+	<string name="share_my_position">我在这里</string>
 	<!-- Location share button text and a title for the respective pop up menu with share options like Message, EMail, Facebook etc. -->
 	<string name="share">分享</string>
 	<!-- Share by email button text, also used in editor. -->

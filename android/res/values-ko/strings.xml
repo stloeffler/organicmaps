@@ -143,8 +143,8 @@
 	<string name="downloading_is_active">국가 다운로드가 지금 진행 중입니다.</string>
 	<!-- Subject for emailed map point / poi / bookmark coordinates -->
 	<string name="share_coords_subject_default">Organic Maps 지도에서 내 핀 보기</string>
-	<!-- Text preceding shared "my position" coordinates -->
-	<string name="share_my_position">Organic Maps 지도에서 제 현재 위치를 살펴 보시기 바랍니다</string>
+	<!-- A very short title for email and shared "my position" coordinate: https://omaps.app/XXXYYY/I_am_here -->
+	<string name="share_my_position">나는 여기있다</string>
 	<!-- Location share button text and a title for the respective pop up menu with share options like Message, EMail, Facebook etc. -->
 	<string name="share">공유</string>
 	<!-- Share by email button text, also used in editor. -->

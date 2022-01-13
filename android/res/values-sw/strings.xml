@@ -20,6 +20,8 @@
 	<string name="children">Mapumziko ya familia</string>
 	<!-- Search category for hospitals; any changes should be duplicated in categories.txt @hospital! -->
 	<string name="hospital">Hospitali</string>
+	<!-- A very short title for email and shared "my position" coordinate: https://omaps.app/XXXYYY/I_am_here -->
+	<string name="share_my_position">Niko hapa</string>
 	<!-- Button in the main Help dialog -->
 	<string name="faq">Maswali na majibu</string>
 	<!-- Button in the main Help dialog -->

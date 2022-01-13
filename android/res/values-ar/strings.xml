@@ -145,8 +145,8 @@
 	<string name="downloading_is_active">جاري الآن تنزيل الدولة</string>
 	<!-- Subject for emailed map point / poi / bookmark coordinates -->
 	<string name="share_coords_subject_default">هاي، تفقد الدبوس الخاص بي على خريطة Organic Maps!</string>
-	<!-- Text preceding shared "my position" coordinates -->
-	<string name="share_my_position">يا هلا، تحقق من موقعي الحالي على خريطة Organic Maps</string>
+	<!-- A very short title for email and shared "my position" coordinate: https://omaps.app/XXXYYY/I_am_here -->
+	<string name="share_my_position">ﺎﻨﻫ ﺎﻧﺃ</string>
 	<!-- Location share button text and a title for the respective pop up menu with share options like Message, EMail, Facebook etc. -->
 	<string name="share">مشاركة</string>
 	<!-- Share by email button text, also used in editor. -->

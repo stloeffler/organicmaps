@@ -146,8 +146,8 @@
 	<string name="downloading_is_active">Le téléchargement de la carte est en cours.</string>
 	<!-- Subject for emailed map point / poi / bookmark coordinates -->
 	<string name="share_coords_subject_default">Hé, regarde mon signet sur la carte Organic Maps !</string>
-	<!-- Text preceding shared "my position" coordinates -->
-	<string name="share_my_position">Hé, regarde ma position actuelle sur la carte Organic Maps</string>
+	<!-- A very short title for email and shared "my position" coordinate: https://omaps.app/XXXYYY/I_am_here -->
+	<string name="share_my_position">Je suis là</string>
 	<!-- Location share button text and a title for the respective pop up menu with share options like Message, EMail, Facebook etc. -->
 	<string name="share">Partager</string>
 	<!-- Share by email button text, also used in editor. -->

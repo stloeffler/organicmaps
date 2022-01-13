@@ -169,8 +169,8 @@
 /* Subject for emailed map point / poi / bookmark coordinates, %1$@ is point's name or address */
 "share_coords_subject" = "%1$@ ў Organic Maps";
 
-/* Text preceding shared "my position" coordinates */
-"share_my_position" = "Я зараз тут на мапе Organic Maps";
+/* A very short title for email and shared "my position" coordinate: https://omaps.app/XXXYYY/I_am_here */
+"share_my_position" = "Я тут";
 
 /* Location share button text and a title for the respective pop up menu with share options like Message, EMail, Facebook etc. */
 "share" = "Падзяліцца";

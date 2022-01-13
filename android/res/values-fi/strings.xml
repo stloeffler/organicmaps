@@ -145,8 +145,8 @@
 	<string name="downloading_is_active">Maata ladataan parhaillaan.</string>
 	<!-- Subject for emailed map point / poi / bookmark coordinates -->
 	<string name="share_coords_subject_default">Hei, katso merkintäni Organic Maps-kartalla</string>
-	<!-- Text preceding shared "my position" coordinates -->
-	<string name="share_my_position">Hei, kurkkaa tämänhetkinen sijaintini Organic Maps:n kartalla</string>
+	<!-- A very short title for email and shared "my position" coordinate: https://omaps.app/XXXYYY/I_am_here -->
+	<string name="share_my_position">Olen täällä</string>
 	<!-- Location share button text and a title for the respective pop up menu with share options like Message, EMail, Facebook etc. -->
 	<string name="share">Jaa</string>
 	<!-- Share by email button text, also used in editor. -->
