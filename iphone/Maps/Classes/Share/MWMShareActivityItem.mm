@@ -1,152 +1,120 @@
 #import "MWMShareActivityItem.h"
 
-
-#include <CoreApi/Framework.h>
+#import <CoreApi/Framework.h>
 #import <CoreApi/PlacePageData.h>
 #import <CoreApi/PlacePagePreviewData.h>
 #import <CoreApi/PlacePageInfoData.h>
 
-NSString * httpGe0Url(NSString * shortUrl)
-{
-  // Replace 'om://' with 'https://omaps.app/'
-  return [shortUrl stringByReplacingCharactersInRange:NSMakeRange(0, 5) withString:@"https://omaps.app/"];
-}
-
 @interface MWMShareActivityItem ()
 
-@property(nonatomic) PlacePageData *data;
-@property(nonatomic) CLLocationCoordinate2D location;
-@property(nonatomic) BOOL isMyPosition;
+@property(nonatomic) NSString * url;      // https://omaps.app/XXXYYY/Title
+@property(nonatomic) NSString * message;  // [Title] [subtitle] [addr] url
+@property(nonatomic) NSString * emailSubject;  // Used only if location is shared via Email.
+@property(nonatomic) NSString * emailMessage;  // [Title] \n[subtitle] \n[addr] \nurl
 
 @end
 
+// Returns https://omaps.app/XXXYYY/Title or https://omaps.app/XXXYYY if title is empty.
+static NSString * OmapsUrl(CLLocationCoordinate2D loc, NSString * _Nonnull title)
+{
+  ms::LatLon const ll = ms::LatLon(loc.latitude, loc.longitude);
+  auto & f = GetFramework();
+  NSString * omUrl = @(f.CodeGe0url(ll.m_lat, ll.m_lon, f.GetDrawScale(), title.UTF8String).c_str());
+  // Replace "om://" with "https://omaps.app/".
+  return [omUrl stringByReplacingCharactersInRange:NSMakeRange(0, 5) withString:@"https://omaps.app/"];
+}
+
+
 @implementation MWMShareActivityItem
 
-- (instancetype)initForMyPositionAtLocation:(CLLocationCoordinate2D const &)location
+- (instancetype)initForMyPositionAtLocation:(CLLocationCoordinate2D)loc
 {
   self = [super init];
   if (self)
   {
-    _location = location;
-    _isMyPosition = YES;
-  }
-  return self;
-}
-
-- (instancetype)initForPlacePageObject:(id<MWMPlacePageObject>)object
-{
-  NSAssert(false, @"deprecated");
-
-  return nil;
-}
-
-- (instancetype)initForPlacePage:(PlacePageData *)data {
-  self = [super init];
-  if (self)
-  {
-    NSAssert(data, @"Entity can't be nil!");
-    _isMyPosition = data.isMyPosition;
-    _data = data;
-  }
-  return self;
-}
-
-- (NSString *)url:(BOOL)isShort
-{
-  auto & f = GetFramework();
-
-  auto const title = ^NSString *(PlacePageData *data)
-  {
-    if (!data || data.isMyPosition)
-      return L(@"share_my_position");
-    else if (data.previewData.title.length > 0)
-      return data.previewData.title;
-    else if (data.previewData.subtitle.length)
-      return data.previewData.subtitle;
-    else if (data.previewData.address.length)
-      return data.previewData.address;
+    _url = OmapsUrl(loc, L(@"share_my_position"));
+    auto & f = GetFramework();
+    auto const address = f.GetAddressAtPoint(mercator::FromLatLon(loc.latitude, loc.longitude), 10 /*meters*/);
+    if (address.IsValid())
+    {
+      _message = [NSString stringWithFormat:@"%@ %@", _emailSubject, _url];
+      _emailSubject = @(address.FormatAddress().c_str());
+      _emailMessage = [NSString stringWithFormat:@"%@ \n%@", _emailSubject, _url];
+    }
     else
+    {
+      _message = _url;
+      _emailSubject = L(@"share_my_position");
+      _emailMessage = _url;
+    }
+  }
+  return self;
+}
+
+- (instancetype)initForPlacePage:(PlacePageData * _Nonnull)data
+{
+  if (data.isMyPosition)
+    return [self initForMyPositionAtLocation:data.locationCoordinate];
+
+  self = [super init];
+  if (self)
+  {
+    auto const urlTitle = ^NSString *(PlacePagePreviewData * pdata)
+    {
+      if (pdata.title.length && ![pdata.title isEqualToString:L(@"core_placepage_unknown_place")])
+        return pdata.title;
+      else if (pdata.subtitle.length)
+        return pdata.subtitle;
+      else if (pdata.address.length)
+        return pdata.address;
       return @"";
-  };
-
-  ms::LatLon const ll = self.data ? ms::LatLon(self.data.locationCoordinate.latitude,
-                                               self.data.locationCoordinate.longitude)
-                                    : ms::LatLon(self.location.latitude, self.location.longitude);
-  std::string const & s = f.CodeGe0url(ll.m_lat, ll.m_lon, f.GetDrawScale(), title(self.data).UTF8String);
-
-  NSString * url = @(s.c_str());
-  if (!isShort)
-    return url;
-  NSUInteger const kGe0UrlLength = 16;
-  return [url substringWithRange:NSMakeRange(0, kGe0UrlLength)];
+    };
+    _url = OmapsUrl(data.locationCoordinate, urlTitle(data.previewData));
+    auto const text = ^NSString *(PlacePagePreviewData * pdata, NSString * delim)
+    {
+      NSMutableString * mstr = [NSMutableString stringWithCapacity:100];
+      if (pdata.title.length && ![pdata.title isEqualToString:L(@"core_placepage_unknown_place")])
+        [mstr appendFormat:@"%@%@", pdata.title, delim];
+      if (pdata.subtitle.length)
+        [mstr appendFormat:@"%@%@", pdata.subtitle, delim];
+      else if (pdata.address.length)
+        [mstr appendFormat:@"%@%@", pdata.address, delim];
+      return mstr;
+    };
+    _message = [NSString stringWithFormat:@"%@ %@", text(data.previewData, @" "), _url];
+    _emailSubject = text(data.previewData, @" ");
+    if (_emailSubject.length == 0)
+      _emailSubject = L(@"share_coords_subject_default");
+    _emailMessage = [NSString stringWithFormat:@"%@\n%@", text(data.previewData, @" \n"), _url];
+  }
+  return self;
 }
 
 #pragma mark - UIActivityItemSource
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
 {
-  return [self url:YES];
+  return self.url;
 }
 
 - (id)activityViewController:(UIActivityViewController *)activityViewController
          itemForActivityType:(NSString *)activityType
 {
   NSString * type = activityType;
-  if ([UIActivityTypePostToTwitter isEqualToString:type])
-    return self.itemForTwitter;
-  return [self itemDefaultWithActivityType:type];
+  if ([UIActivityTypePostToTwitter isEqualToString:type] ||
+      [UIActivityTypeCopyToPasteboard isEqualToString:type])
+    return self.url;
+
+  if ([UIActivityTypeMail isEqualToString:type])
+    return self.emailMessage;
+
+  return self.message;
 }
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController
               subjectForActivityType:(NSString *)activityType
 {
-  return [self subjectDefault];
-}
-
-#pragma mark - Message
-
-- (NSString *)itemForTwitter
-{
-  NSString * shortUrl = [self url:YES];
-  return [NSString stringWithFormat:@"%@\n%@", httpGe0Url(shortUrl),
-                                    self.isMyPosition ? L(@"share_my_position")
-                                                      : self.data.previewData.title];
-}
-
-- (NSString *)itemDefaultWithActivityType:(NSString *)activityType
-{
-  NSString * ge0Url = [self url:NO];
-  NSString * url = httpGe0Url(ge0Url);
-  if (self.isMyPosition)
-  {
-    BOOL const hasSubject = [activityType isEqualToString:UIActivityTypeMail];
-    if (hasSubject)
-      return url;
-    return [NSString
-        stringWithFormat:@"%@ %@", L(@"share_my_position"), url];
-  }
-
-  NSMutableString * result = [@"" mutableCopy];
-  PlacePagePreviewData * pd = self.data.previewData;
-  for (NSString * str in @[pd.title, pd.subtitle, pd.address, self.data.infoData.phone, url])
-  {
-    if (str.length)
-    {
-      if (result.length)
-        [result appendString:@"\n"];
-      [result appendString:str];
-    }
-  }
-
-  return result;
-}
-
-#pragma mark - Subject
-
-- (NSString *)subjectDefault
-{
-  return self.isMyPosition ? L(@"share_my_position")
-                           : L(@"share_coords_subject_default");
+  return self.emailSubject;
 }
 
 @end
